@@ -22,67 +22,28 @@ if (mysql_num_rows($result) == 0)
 	die('Empty table');
 }
 
-print '<table border="1">';
-print '<thead>';
-print '<tr>';
-print '<th>ID</th>';
-print '<th>ENGR</th>';
-print '<th>Name</th>';
-print '<th>Exec</th>';
-print '<th>Edit</th>';
-print '<th>Delete</th>';
-print '</tr>';
-print '</thead>';
-print '<tbody>';
+print '<Members>';
+print '<Fields>';
+print '<Field>ID</Field>';
+print '<Field>ENGR</Field>';
+print '<Field>Name</Field>';
+print '<Field>Exec</Field>';
+print '</Fields>';
 
-while ($row = mysql_fetch_array($result, MYSQL_NUM))
+while ($row = mysql_fetch_array($result, MYSQL_ASSOC))
 {
-	print '<tr>';
-	
 	foreach ($row as $col)
 	{
-		print '<td>' . $col . '</td>';
+		print '<Member>';
+		print '<ID>' . $row['ID'] . '</ID>';
+		print '<ENGR>' . $row['ENGR'] . '</ID>';
+		print '<Name>' . $row['Name'] . '</ID>';
+		print '<Exec>' . $row['Exec'] . '</ID>';
+		print '</Member>';
 	}
-	
-	#print '<td>&nbsp;</td>';
-	#print '<td>&nbsp;</td>';
-	
-	print '<td><button>&nbsp;</button></td>';
-	print '<td><button>&nbsp;</button></td>';
-	
-	print '</tr>';
 }
 
-		/*<tr>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td><button>Edit</button></td>
-			<td><button>Delete</button></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td><button>Edit</button></td>
-			<td><button>Delete</button></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td><button>Edit</button></td>
-			<td><button>Delete</button></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td><button>Edit</button></td>
-			<td><button>Delete</button></td>
-		</tr>*/
-print '</tbody>';
-print '</table>';
+print '</Members>';
 
 mysql_close($con);
 

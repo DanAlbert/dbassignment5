@@ -7,7 +7,30 @@
 	<script type="text/javascript">
 		$(document).ready(function ()
 		{
-			$("div#table-container").load("getTable.php", { table : 'Members' });
+			$.ajax({type: "POST",
+				url: "getTable.php",
+				data: { table: 'Members' },
+				dataType: "xml",
+				success: function(xml)
+				{
+					var fields = new Array();
+					$(xml).find('Fields').find('Field').each(function ()
+					{
+						fields.push($(this).text());
+					});
+					
+					$("div#table-container").html('<table width="1"><thead><tr></tr></thead></table>');
+					for (var i in fields)
+					{
+						$("tr").append('<th>' + fields[i] + '</th>');
+					}
+					
+					$(xml).find('Member').each(function ()
+					{
+						
+					});
+				}
+			});
 			$("button#new-member").click(function ()
 			{
 				$("span").load("submitMember.php", { engr : $("input[name='engr']").val(),  name : $("input[name='name']").val() }, function (response, status)
