@@ -1,20 +1,36 @@
 <?php
 
-$engr = mysql_real_escape_string($_REQUEST['engr']);
-$name = mysql_real_escape_string($_REQUEST['name']);
+$hostname = 'mysql.gingerhq.net';
+$database = 'osugds';
+$username = 'osugds';
+$password = 'CUUh7N4aUWDJR2rF';
 
-$con = mysql_connect($host, $user, $pass);
+$engr = $_POST['engr'];
+$name = $_POST['name'];
+
+$con = mysql_connect($hostname, $username, $password);
 
 if (!$con)
 {
 	die('Could not open database connection: ' . mysql_error());
 }
 
-mysql_select_db($db, $con);
+mysql_select_db($database, $con);
 
-$query = "INSERT INTO Members (ENGR, Name) VALUES ('" . $engr . "', '" . $name . "');";
+$query = "SELECT * FROM Members WHERE ENGR='" . $engr . "';";
 
 $result = mysql_query($query, $con);
+if (mysql_num_rows($result) == 0)
+{
+	$query = "INSERT INTO Members (ENGR, Name) VALUES ('" . $engr . "', '" . $name . "');";
+	
+	mysql_query($query, $con);
+	print "Member added successfully.";
+}
+else
+{
+	print "Member already exists in database.";
+}
 
 mysql_close($con);
 
