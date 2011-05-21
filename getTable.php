@@ -22,28 +22,31 @@ if (mysql_num_rows($result) == 0)
 	die('Empty table');
 }
 
-print '<Members>';
-print '<Fields>';
-print '<Field>ID</Field>';
-print '<Field>ENGR</Field>';
-print '<Field>Name</Field>';
-print '<Field>Exec</Field>';
-print '</Fields>';
+header("Content-Type: text/xml");
 
-while ($row = mysql_fetch_array($result, MYSQL_ASSOC))
+print '<?xml version="1.0" ?>' . "\n";
+print "<Members>\n";
+print "\t<Fields>\n";
+print "\t\t<Field>ID</Field>\n";
+print "\t\t<Field>ENGR</Field>\n";
+print "\t\t<Field>Name</Field>\n";
+print "\t\t<Field>Executive</Field>\n";
+print "\t</Fields>\n";
+
+while ($row = mysql_fetch_array($result))
 {
-	foreach ($row as $col)
-	{
-		print '<Member>';
-		print '<ID>' . $row['ID'] . '</ID>';
-		print '<ENGR>' . $row['ENGR'] . '</ID>';
-		print '<Name>' . $row['Name'] . '</ID>';
-		print '<Exec>' . $row['Exec'] . '</ID>';
-		print '</Member>';
-	}
+	#foreach ($row as $col)
+	#{
+		print "\t<Member>\n";
+		print "\t\t<ID>" . $row['ID'] . "</ID>\n";
+		print "\t\t<ENGR>" . $row['ENGR'] . "</ENGR>\n";
+		print "\t\t<Name>" . $row['Name'] . "</Name>\n";
+		print "\t\t<Executive>" . $row['Executive'] . "</Executive>\n";
+		print "\t</Member>\n";
+	#}
 }
 
-print '</Members>';
+print "</Members>\n";
 
 mysql_close($con);
 
