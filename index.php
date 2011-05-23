@@ -16,6 +16,25 @@
 			});
 		}
 		
+		function editMember(id)
+		{
+			var engr;
+			var name;
+			var exec;
+			
+			engr = $("tr#id" + id).children("td:nth-child(2)").children("input").first().val();
+			name = $("tr#id" + id).children("td:nth-child(3)").children("input").first().val();
+			exec = $("tr#id" + id).children("td:nth-child(4)").children("input:checked").val();
+			
+			$("span").load("updateMember.php", { id: id, engr: engr,  name: name, exec: exec }, function (response, status)
+			{
+				if (status == "success")
+				{
+					refreshTable();
+				}
+			});
+		}
+		
 		function refreshTable()
 		{
 			$.ajax({type: "POST",
@@ -49,12 +68,33 @@
 						
 						for (var i in fields)
 						{
-							cols += '<td>' + $(this).find(fields[i]).text() + '</td>';
+							if ($(this).find(fields[i]).attr('readonly') == '1')
+							{
+								cols += '<td>' + $(this).find(fields[i]).text() + '</td>';
+							}
+							else
+							{
+								if ($(this).find(fields[i]).attr('type') == 'checkbox')
+								{
+									cols += '<td><input type="checkbox" ';
+									
+									if ($(this).find(fields[i]).text() != '0')
+									{
+										cols += 'checked="checked" ';
+									}
+									
+									cols += 'value="1" /></td>';
+								}
+								else if ($(this).find(fields[i]).attr('type') == 'text')
+								{
+									cols += '<td><input type="text" value="' + $(this).find(fields[i]).text() + '" /></td>';
+								}
+							}
 						}
 						
-						cols += '<td><button onclick="editMember(' + $(this).find('ID').text() + ');"></button></td>';
-						cols += '<td><button onclick="deleteMember(' + $(this).find('ID').text() + ');"></button></td>';
-						$("tbody").append('<tr>' + cols + '</tr>');
+						cols += '<td><button onclick="editMember(' + $(this).find('ID').text() + ');">Save Changes</button></td>';
+						cols += '<td><button onclick="deleteMember(' + $(this).find('ID').text() + ');">Delete</button></td>';
+						$("tbody").append('<tr id="id' + $(this).find('ID').text() + '">' + cols + '</tr>');
 					});
 				},
 				error: function(xhr)
@@ -68,7 +108,7 @@
 			refreshTable();
 			$("button#new-member").click(function ()
 			{
-				$("span").load("submitMember.php", { engr : $("input[name='engr']").val(),  name : $("input[name='name']").val(), exec: $("input#exec:checked").val() }, function (response, status)
+				$("span").load("submitMember.php", { engr: $("input[name='engr']").val(),  name: $("input[name='name']").val(), exec: $("input#exec:checked").val() }, function (response, status)
 				{
 					if (status == "success")
 					{
