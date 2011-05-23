@@ -5,9 +5,7 @@ $database = 'osugds';
 $username = 'osugds';
 $password = 'CUUh7N4aUWDJR2rF';
 
-$engr = $_POST['engr'];
-$name = $_POST['name'];
-$exec = $_POST['exec'];
+$id = $_POST['id'];
 
 $con = mysql_connect($hostname, $username, $password);
 
@@ -18,19 +16,17 @@ if (!$con)
 
 mysql_select_db($database, $con);
 
-$query = "SELECT * FROM Members WHERE ENGR='" . $engr . "';";
+$query = "DELETE FROM Members WHERE ID='" . $id . "';";
 
 $result = mysql_query($query, $con);
 if (mysql_num_rows($result) == 0)
 {
-	$query = "INSERT INTO Members (ENGR, Name, Executive) VALUES ('" . $engr . "', '" . $name . "', '" . $exec . "');";
-	
-	mysql_query($query, $con);
-	print "Member added successfully.";
+	print "Member deleted successfully.";
 }
 else
 {
-	print "Member already exists in database.";
+	# Shouldn't ever get here...
+	print "Member does not exist in database.";
 }
 
 mysql_close($con);

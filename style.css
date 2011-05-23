@@ -3,6 +3,11 @@ div.form label, div.form input
 	display: block;
 }
 
+div.form label.inline, div.form input[type=radio], div.form input[type=checkbox]
+{
+	display: inline;
+}
+
 /*table 
 {
 	border: 1px solid black;

@@ -6,7 +6,7 @@ $username = 'osugds';
 $password = 'CUUh7N4aUWDJR2rF';
 
 $table = $_POST['table'];
-$query = 'SELECT * FROM ' . $table . ';';
+$query = 'SELECT * FROM ' . $table . ' ORDER BY ENGR ASC;';
 
 $con = mysql_connect($hostname, $username, $password);
 
@@ -37,12 +37,12 @@ while ($row = mysql_fetch_array($result))
 {
 	#foreach ($row as $col)
 	#{
-		print "\t<Member>\n";
+		print "\t<Row>\n";
 		print "\t\t<ID>" . $row['ID'] . "</ID>\n";
 		print "\t\t<ENGR>" . $row['ENGR'] . "</ENGR>\n";
 		print "\t\t<Name>" . $row['Name'] . "</Name>\n";
 		print "\t\t<Executive>" . $row['Executive'] . "</Executive>\n";
-		print "\t</Member>\n";
+		print "\t</Row>\n";
 	#}
 }
 
