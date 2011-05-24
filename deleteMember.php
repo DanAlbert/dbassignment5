@@ -5,9 +5,9 @@ $database = 'osugds';
 $username = 'osugds';
 $password = 'CUUh7N4aUWDJR2rF';
 
-$id = $_POST['id'];
-
 $con = mysql_connect($hostname, $username, $password);
+
+$id = mysql_real_escape_string($_POST['id']);
 
 if (!$con)
 {

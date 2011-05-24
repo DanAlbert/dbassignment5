@@ -5,10 +5,10 @@ $database = 'osugds';
 $username = 'osugds';
 $password = 'CUUh7N4aUWDJR2rF';
 
-$table = $_POST['table'];
-$query = 'SELECT * FROM ' . $table . ' ORDER BY ENGR ASC;';
-
 $con = mysql_connect($hostname, $username, $password);
+
+$table = mysql_real_escape_string($_POST['table']);
+$query = 'SELECT * FROM ' . $table . ' ORDER BY ENGR ASC;';
 
 if (!$con)
 {

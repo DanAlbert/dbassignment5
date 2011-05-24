@@ -5,11 +5,11 @@ $database = 'osugds';
 $username = 'osugds';
 $password = 'CUUh7N4aUWDJR2rF';
 
-$engr = $_POST['engr'];
-$name = $_POST['name'];
-$exec = $_POST['exec'];
-
 $con = mysql_connect($hostname, $username, $password);
+
+$engr = mysql_real_escape_string($_POST['engr']);
+$name = mysql_real_escape_string($_POST['name']);
+$exec = mysql_real_escape_string($_POST['exec']);
 
 if (!$con)
 {
