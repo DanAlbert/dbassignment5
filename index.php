@@ -60,13 +60,17 @@
 					var fields = new Array();
 					$(xml).find('Fields').find('Field').each(function ()
 					{
-						fields.push($(this).text());
+						var field = new Object;
+						field.name = $(this).text();
+						field.readonly = $(this).attr('readonly');
+						field.type = $(this).attr('type');
+						fields.push(field);
 					});
 					
 					$("div#table-container").html('<table border="1"><thead><tr></tr></thead><tbody></tbody></table>');
 					for (var i in fields)
 					{
-						$("tr").append('<th>' + fields[i] + '</th>');
+						$("tr").append('<th>' + fields[i].name + '</th>');
 					}
 					
 					$("tr").append('<th>Edit</th>');
@@ -78,26 +82,27 @@
 						
 						for (var i in fields)
 						{
-							if ($(this).find(fields[i]).attr('readonly') == '1')
+							if (fields[i].readonly == '1')
 							{
-								cols += '<td>' + $(this).find(fields[i]).text() + '</td>';
+								cols += '<td>' + $(this).find(fields[i].name).text() + '</td>';
 							}
 							else
 							{
-								if ($(this).find(fields[i]).attr('type') == 'checkbox')
+								
+								if (fields[i].type == 'checkbox')
 								{
-									cols += '<td><input type="checkbox" name="' + fields[i] + '" ';
+									cols += '<td><input type="checkbox" name="' + fields[i].name + '" ';
 									
-									if ($(this).find(fields[i]).text() != '0')
+									if ($(this).find(fields[i].name).text() != '0')
 									{
 										cols += 'checked="checked" ';
 									}
 									
 									cols += 'value="1" /></td>';
 								}
-								else if ($(this).find(fields[i]).attr('type') == 'text')
+								else if (fields[i].type == 'text')
 								{
-									cols += '<td><input type="text" name="' + fields[i] + '" value="' + $(this).find(fields[i]).text() + '" /></td>';
+									cols += '<td><input type="text" name="' + fields[i].name + '" value="' + $(this).find(fields[i].name).text() + '" /></td>';
 								}
 							}
 						}

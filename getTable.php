@@ -27,10 +27,10 @@ header("Content-Type: text/xml");
 print '<?xml version="1.0" ?>' . "\n";
 print "<Members>\n";
 print "\t<Fields>\n";
-print "\t\t<Field>ID</Field>\n";
-print "\t\t<Field>ENGR</Field>\n";
-print "\t\t<Field>Name</Field>\n";
-print "\t\t<Field>Executive</Field>\n";
+print "\t\t<Field readonly=\"1\">ID</Field>\n";
+print "\t\t<Field type=\"text\">ENGR</Field>\n";
+print "\t\t<Field type=\"text\">Name</Field>\n";
+print "\t\t<Field type=\"checkbox\">Executive</Field>\n";
 print "\t</Fields>\n";
 
 while ($row = mysql_fetch_array($result))
@@ -38,10 +38,10 @@ while ($row = mysql_fetch_array($result))
 	#foreach ($row as $col)
 	#{
 		print "\t<Row>\n";
-		print "\t\t<ID readonly=\"1\">" . $row['ID'] . "</ID>\n";
-		print "\t\t<ENGR type=\"text\">" . $row['ENGR'] . "</ENGR>\n";
-		print "\t\t<Name type=\"text\">" . $row['Name'] . "</Name>\n";
-		print "\t\t<Executive type=\"checkbox\">" . $row['Executive'] . "</Executive>\n";
+		print "\t\t<ID>" . $row['ID'] . "</ID>\n";
+		print "\t\t<ENGR>" . $row['ENGR'] . "</ENGR>\n";
+		print "\t\t<Name>" . $row['Name'] . "</Name>\n";
+		print "\t\t<Executive>" . $row['Executive'] . "</Executive>\n";
 		print "\t</Row>\n";
 	#}
 }
