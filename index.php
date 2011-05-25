@@ -67,14 +67,16 @@
 						fields.push(field);
 					});
 					
-					$("div#table-container").html('<table border="1"><thead><tr></tr></thead><tbody></tbody></table>');
+					$("div#table-container").html('<table border="1"><thead></thead><tbody></tbody></table>');
+					
+					var header = '<tr>';
 					for (var i in fields)
 					{
-						$("tr").append('<th>' + fields[i].name + '</th>');
+						header += '<th>' + fields[i].name + '</th>';
 					}
+					header += '<th>Edit</th><th>Delete</th></tr>';
 					
-					$("tr").append('<th>Edit</th>');
-					$("tr").append('<th>Delete</th>');
+					$("div#table-container thead").append(header);
 					
 					$(xml).find('Row').each(function ()
 					{
@@ -110,10 +112,10 @@
 						cols += '<td><button onclick="editMember(' + $(this).find('ID').text() + ');">Save Changes</button></td>';
 						cols += '<td><button onclick="deleteMember(' + $(this).find('ID').text() + ');">Delete</button></td>';
 						
-						$("tbody").append('<tr id="id' + $(this).find('ID').text() + '">' + cols + '</tr>');
+						$("div#table-container tbody").append('<tr id="id' + $(this).find('ID').text() + '">' + cols + '</tr>');
 					});
 					
-					$("tbody").append('<tr><td>--</td><td><input type="text" name="ENGR" /></td><td><input type="text" name="Name" /></td>' +
+					$("div#table-container tbody").append('<tr><td>--</td><td><input type="text" name="ENGR" /></td><td><input type="text" name="Name" /></td>' +
 									'<td><input type="checkbox" name="Executive" value="1" /></td>' +
 									'<td><button onclick="newMember()">New Member</button></td><td>&nbsp</td></tr>');
 				},
@@ -135,6 +137,14 @@
 <h1>Members</h1>
 <span>&nbsp;</span>
 
+<!--<table border="1">
+	<tr>
+		<td><input type="text" name="ID" /></td>
+		<td><input type="text" name="ENGR" /></td>
+		<td><input type="text" name="Name" /></td>
+		<td><input type="checkbox" name="Executive" value="1" /></td>
+	</tr>
+</table>-->
 <div id="table-container">
 </div>
 
