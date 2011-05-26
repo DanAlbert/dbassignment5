@@ -7,14 +7,16 @@
 	<script type="text/javascript">
 		function newMember()
 		{
-			$("span").load("submitMember.php", { engr: $("tr:last-child input[name='ENGR']").val(),  name: $("tr:last-child input[name='Name']").val(), exec: $("tr:last-child input[name='Executive']:checked").val() }, function (response, status)
+			var engr = $("div#table-container tbody tr:last-child input[name='ENGR']").val();
+			var name = $("div#table-container tbody tr:last-child input[name='Name']").val();
+			var exec = $("div#table-container tbody tr:last-child input[name='Executive']:checked").val();
+			
+			$("span").load("submitMember.php", { engr: engr,  name: name, exec: exec }, function (response, status)
 			{
 				if (status == "success")
 				{
+					clearFilter();
 					refreshTable();
-					$("input[name='engr']").val('');
-					$("input[name='name']").val('');
-					$("input#exec']").attr('checked', false);
 				}
 			});
 		}
@@ -29,6 +31,7 @@
 			{
 				if (status == "success")
 				{
+					clearFilter();
 					refreshTable();
 				}
 			});
@@ -40,15 +43,24 @@
 			{
 				if (status == "success")
 				{
+					clearFilter();
 					refreshTable();
 				}
 			});
+		}
+		
+		function applyFilter()
+		{
+			$("span").html('');
+			var filterExec = $("div#table-container thead input[name=\"Executive\"]:checked").val();
+			refreshTable();
 		}
 		
 		function clearFilter()
 		{
 			$("div#table-container thead input[type=\"checkbox\"]").attr('checked', false);
 			$("div#table-container thead input[type!=\"checkbox\"]").val('');
+			refreshTable();
 		}
 		
 		function refreshTable()
@@ -73,7 +85,7 @@
 			
 			$.ajax({type: "POST",
 				url: "getTable.php",
-				data: { table: 'Members', ID: filterID, ENGR: filterENGR, Executive: filterExec },
+				data: { table: 'Members', ID: filterID, ENGR: filterENGR, Name: filterName, Executive: filterExec },
 				dataType: "xml",
 				beforeSend: function()
 				{
@@ -110,7 +122,7 @@
 						}
 						filter += '</td>';
 					}
-					filter += '<td><button onclick="refreshTable()">Apply Filter</button></td><td><button onclick="clearFilter();">Clear Filter</button></td></tr>';
+					filter += '<td><button onclick="applyFilter()">Apply Filter</button></td><td><button onclick="clearFilter();">Clear Filter</button></td></tr>';
 					header += '<th>Edit</th><th>Delete</th></tr>';
 
 					$("div#table-container thead").append(header);
@@ -153,9 +165,15 @@
 						$("div#table-container tbody").append('<tr id="id' + $(this).find('ID').text() + '">' + cols + '</tr>');
 					});
 					
-					$("div#table-container tbody").append('<tr><td>--</td><td><input type="text" name="ENGR" /></td><td><input type="text" name="Name" /></td>' +
-									'<td><input type="checkbox" name="Executive" value="1" /></td>' +
-									'<td><button onclick="newMember()">New Member</button></td><td>&nbsp</td></tr>');
+					if (	((filterID == '') || (filterID === undefined)) &&
+							((filterENGR == '') || (filterENGR === undefined)) &&
+							((filterName == '') || (filterName === undefined))&&
+							(filterExec === undefined))
+					{
+						$("div#table-container tbody").append('<tr><td>--</td><td><input type="text" name="ENGR" /></td><td><input type="text" name="Name" /></td>' +
+										'<td><input type="checkbox" name="Executive" value="1" /></td>' +
+										'<td><button onclick="newMember()">New Member</button></td><td>&nbsp</td></tr>');
+					}
 					
 					var i = 0;
 					$("div#table-container thead input").each(function ()
