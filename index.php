@@ -45,11 +45,35 @@
 			});
 		}
 		
+		function clearFilter()
+		{
+			$("div#table-container thead input[type=\"checkbox\"]").attr('checked', false);
+			$("div#table-container thead input[type!=\"checkbox\"]").val('');
+		}
+		
 		function refreshTable()
 		{
+			var filters = new Array();
+			$("div#table-container thead input").each(function ()
+			{
+				if ($(this).attr("type") == 'checkbox')
+				{
+					filters.push($(this).attr('checked'));
+				}
+				else
+				{
+					filters.push($(this).val());
+				}
+			});
+			
+			var filterID = $("div#table-container thead input[name=\"ID\"]").val();
+			var filterENGR = $("div#table-container thead input[name=\"ENGR\"]").val();
+			var filterName = $("div#table-container thead input[name=\"Name\"]").val();
+			var filterExec = $("div#table-container thead input[name=\"Executive\"]:checked").val();
+			
 			$.ajax({type: "POST",
 				url: "getTable.php",
-				data: { table: 'Members' },
+				data: { table: 'Members', ID: filterID, ENGR: filterENGR, Executive: filterExec },
 				dataType: "xml",
 				beforeSend: function()
 				{
@@ -70,13 +94,27 @@
 					$("div#table-container").html('<table border="1"><thead></thead><tbody></tbody></table>');
 					
 					var header = '<tr>';
+					var filter = '<tr>';
 					for (var i in fields)
 					{
 						header += '<th>' + fields[i].name + '</th>';
+						
+						filter += '<td>';
+						if (fields[i].type == 'checkbox')
+						{
+							filter += '<input type="' + fields[i].type + '" name="' + fields[i].name + '" value="1" />';
+						}
+						else 
+						{
+							filter += '<input type="' + fields[i].type + '" name="' + fields[i].name + '" />';
+						}
+						filter += '</td>';
 					}
+					filter += '<td><button onclick="refreshTable()">Apply Filter</button></td><td><button onclick="clearFilter();">Clear Filter</button></td></tr>';
 					header += '<th>Edit</th><th>Delete</th></tr>';
-					
+
 					$("div#table-container thead").append(header);
+					$("div#table-container thead").append(filter);
 					
 					$(xml).find('Row').each(function ()
 					{
@@ -118,6 +156,20 @@
 					$("div#table-container tbody").append('<tr><td>--</td><td><input type="text" name="ENGR" /></td><td><input type="text" name="Name" /></td>' +
 									'<td><input type="checkbox" name="Executive" value="1" /></td>' +
 									'<td><button onclick="newMember()">New Member</button></td><td>&nbsp</td></tr>');
+					
+					var i = 0;
+					$("div#table-container thead input").each(function ()
+					{
+						if ($(this).attr('type') == 'checkbox')
+						{
+							$(this).attr('checked', filters[i]);
+						}
+						else
+						{
+							$(this).val(filters[i]);
+						}
+						i++;
+					});
 				},
 				error: function(xhr)
 				{
