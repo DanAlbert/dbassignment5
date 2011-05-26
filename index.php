@@ -51,7 +51,7 @@
 		
 		function applyFilter()
 		{
-			$("span").html('');
+			$("span").html('&nbsp;');
 			var filterExec = $("div#table-container thead input[name=\"Executive\"]:checked").val();
 			refreshTable();
 		}
@@ -207,14 +207,6 @@
 <h1>Members</h1>
 <span>&nbsp;</span>
 
-<!--<table border="1">
-	<tr>
-		<td><input type="text" name="ID" /></td>
-		<td><input type="text" name="ENGR" /></td>
-		<td><input type="text" name="Name" /></td>
-		<td><input type="checkbox" name="Executive" value="1" /></td>
-	</tr>
-</table>-->
 <div id="table-container">
 </div>
 
