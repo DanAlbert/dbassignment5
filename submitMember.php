@@ -1,9 +1,14 @@
 <?php
 
-$hostname = 'mysql.gingerhq.net';
+/*$hostname = 'mysql.gingerhq.net';
 $database = 'osugds';
 $username = 'osugds';
-$password = 'CUUh7N4aUWDJR2rF';
+$password = 'CUUh7N4aUWDJR2rF';*/
+
+$hostname = 'mysql.cs.orst.edu';
+$database = 'albertd';
+$username = 'albertd';
+$password = '6106';
 
 $con = mysql_connect($hostname, $username, $password);
 
